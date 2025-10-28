@@ -5,13 +5,13 @@ Two complementary approaches are implemented:
 &nbsp; &nbsp;&nbsp; - Season-based analysis: Uses recent races from the current season.  
 
 # Project Structure
-f1_race_pace_prediction/
-│
-├── prediction_same_circuit.py         # Prédiction basée sur l'historique du circuit
-├── prediction_same_season.py          # Prédiction basée sur les courses précédentes de la saison
-├── main_functions.py          # Fonctions utilitaires (visualisation, calculs, mapping)
-├── f1_cache/                  # Cache FastF1 pour accélérer les chargements
-├── README.md                  # Ce fichier
+f1_race_pace_prediction/  
+│  
+├── prediction_same_circuit.py         # Prédiction basée sur l'historique du circuit  
+├── prediction_same_season.py          # Prédiction basée sur les courses précédentes de la saison  
+├── main_functions.py          # Fonctions utilitaires (visualisation, calculs, mapping)  
+├── f1_cache/                  # Cache FastF1 pour accélérer les chargements  
+├── README.md                  # Ce fichier  
 
 
 # Goal
@@ -38,14 +38,14 @@ Each script generates:
 
 # How to Use
   1. Run a prediction:  
-&nbsp; &nbsp;&nbsp; - For circuit-based analysis: python predictions_same_circuit.py
-&nbsp; &nbsp;&nbsp; - For season-based analysis: python predictions_same_season.py
+&nbsp; &nbsp;&nbsp; - For circuit-based analysis: python predictions_same_circuit.py  
+&nbsp; &nbsp;&nbsp; - For season-based analysis: python predictions_same_season.py  
 	2. View results:  
 &nbsp; &nbsp;&nbsp; - Predictions are printed in the console.  
 &nbsp; &nbsp;&nbsp; - Plots are saved automatically.  
 
 # Utility Functions
-Located in main_functions.py:
+Located in main_functions.py:  
 &nbsp; &nbsp;&nbsp; - calculate_clean_air_pace: computes average of the fastest 20% laps  
 &nbsp; &nbsp;&nbsp; - print_residuals: visualizes prediction errors  
 &nbsp; &nbsp;&nbsp; - plot_feature_importance: shows model feature weights  
@@ -60,6 +60,6 @@ VER      | 89.789      | 91.012         | 0.446     | 90.876
 …
 
 # Future Improvements
-&nbsp; &nbsp;&nbsp; - Add weather and incident data
-&nbsp; &nbsp;&nbsp; - Build an interactive dashboard (e.g. Streamlit)
-&nbsp; &nbsp;&nbsp; - Track model performance across the season
+&nbsp; &nbsp;&nbsp; - Add weather and incident data  
+&nbsp; &nbsp;&nbsp; - Build an interactive dashboard (e.g. Streamlit)  
+&nbsp; &nbsp;&nbsp; - Track model performance across the season  
