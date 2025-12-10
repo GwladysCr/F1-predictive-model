@@ -1,4 +1,3 @@
-````markdown
 # F1 Race Lap Time Predictor - 2025
 
 This project predicts Formula 1 race lap times for upcoming Grand Prix events using historical data, qualifying results, weather conditions, and team/driver statistics. It leverages machine learning models including **Random Forest**, **Ridge Regression**, and **XGBoost**.
