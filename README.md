@@ -1,65 +1,113 @@
-# F1 Race Pace Prediction
-This project uses historical and current Formula 1 data to predict race pace for upcoming Grand Prix events. It leverages the FastF1 library to extract session data and applies machine learning models to forecast driver performance.  
-Two complementary approaches are implemented:  
-&nbsp; &nbsp;&nbsp; - Circuit-based analysis: Uses past editions of the same Grand Prix.  
-&nbsp; &nbsp;&nbsp; - Season-based analysis: Uses recent races from the current season.  
+````markdown
+# F1 Race Lap Time Predictor - 2025
 
-# Project Structure
-f1_race_pace_prediction/  
-│  
-├── prediction_same_circuit.py         # Prédiction basée sur l'historique du circuit  
-├── prediction_same_season.py          # Prédiction basée sur les courses précédentes de la saison  
-├── main_functions.py          # Fonctions utilitaires (visualisation, calculs, mapping)  
-├── f1_cache/                  # Cache FastF1 pour accélérer les chargements  
-├── README.md                  # Ce fichier  
+This project predicts Formula 1 race lap times for upcoming Grand Prix events using historical data, qualifying results, weather conditions, and team/driver statistics. It leverages machine learning models including **Random Forest**, **Ridge Regression**, and **XGBoost**.
+
+---
+
+## **Features**
+
+- Pulls historical F1 race data using [FastF1](https://theoehrly.github.io/Fast-F1/).  
+
+- Collects weather data (temperature, wind, precipitation) for race days using the [Open-Meteo API](https://open-meteo.com/).  
+
+- Computes a “clean air pace” metric from qualifying laps to estimate optimal lap times.  
+
+- Supports multiple machine learning models:
+  - Ridge Regression
+  - Random Forest Regressor
+  - XGBoost Regressor
+  - Ensemble of all models weighted by R² performance
+
+- Outputs **podium predictions** with predicted lap times and percentage differences from qualifying.
+
+---
+
+## **Installation**
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/your-username/f1-lap-predictor.git
+cd f1-lap-predictor
+````
+
+2. Install required Python packages:
+
+```bash
+pip install fastf1 pandas numpy scikit-learn xgboost requests
+```
+
+---
+
+## **Usage**
+
+1. Set the circuit and year to predict:
+
+```python
+predict = 2025
+circuit = 'Monaco'
+```
+
+2. Run the main script:
+
+```bash
+python predict_f1.py
+```
+
+3. The script will:
+
+* Load historical data for the last 3 seasons for the selected circuit.
+* Train machine learning models on historical lap times.
+* Fetch qualifying and weather data for the target race.
+* Predict lap times for each driver.
+* Display podium predictions for each model and the ensemble.
+
+Example output:
+
+```
+--- Modèles individuels ---
+
+RandomForest:
+  🥇 1. NOR - 90.31s (Quali: 82.41s, +9.6%)
+  🥈 2. PIA - 90.31s (Quali: 82.44s, +9.6%)
+  🥉 3. RUS - 90.31s (Quali: 82.64s, +9.3%)
+```
+
+---
+
+## **Project Structure**
+
+* `predict_f1.py` : Main script with data loading, model training, and prediction functions.
+* `__pycache__/` : Cache directory for FastF1 session data.
+
+---
+
+## **Configuration**
+
+* `team_pts` : Points per team used to scale team performance in predictions.
+* `driver_team` : Mapping of drivers to their teams.
+* `models` : Dictionary of ML models with hyperparameters. Can be customized.
+
+---
+
+## **Notes**
+
+* Weather data is retrieved automatically from Open-Meteo. For future races, forecasts are used; for past races, historical weather data is pulled.
+* The ensemble prediction is a **weighted average** of all models based on their R² score.
+* Ensure internet connectivity for FastF1 and Open-Meteo API calls.
+
+---
+
+## **License**
+
+This project is released under the MIT License.
+
+---
+
+## **Acknowledgements**
+
+* [FastF1](https://github.com/theoehrly/Fast-F1) for providing Formula 1 telemetry and session data.
+* [Open-Meteo](https://open-meteo.com/) for free weather data API.
 
 
-# Goal
-Predict the average clean air race pace (lap time in seconds) for each driver in an upcoming race using:  
-&nbsp; &nbsp;&nbsp; - Qualifying performance (QualiTime_s)  
-&nbsp; &nbsp;&nbsp; - Clean air pace from previous races (CleanAirPace_s)  
-&nbsp; &nbsp;&nbsp; - Team performance score (TeamScore)  
-
-# Models Used
-&nbsp; &nbsp;&nbsp; - XGBoost Regressor  
-&nbsp; &nbsp;&nbsp; - Random Forest Regressor  
-&nbsp; &nbsp;&nbsp; - Ensemble Model: average of both predictions  
-
-Model performance is evaluated using:  
-&nbsp; &nbsp;&nbsp; - Cross-validation (MAE)  
-&nbsp; &nbsp;&nbsp; - Residual analysis  
-&nbsp; &nbsp;&nbsp; - Feature importance plots  
-
-# Visual Outputs
-Each script generates:  
-&nbsp; &nbsp;&nbsp; - Residual plot (Residuals.png)  
-&nbsp; &nbsp;&nbsp; - Feature importance plots for each model  
-&nbsp; &nbsp;&nbsp; - Top 3 predicted drivers by model  
-
-# How to Use
-  1. Run a prediction:  
-&nbsp; &nbsp;&nbsp; - For circuit-based analysis: python predictions_same_circuit.py  
-&nbsp; &nbsp;&nbsp; - For season-based analysis: python predictions_same_season.py  
-	2. View results:  
-&nbsp; &nbsp;&nbsp; - Predictions are printed in the console.  
-&nbsp; &nbsp;&nbsp; - Plots are saved automatically.  
-
-# Utility Functions
-Located in main_functions.py:  
-&nbsp; &nbsp;&nbsp; - calculate_clean_air_pace: computes average of the fastest 20% laps  
-&nbsp; &nbsp;&nbsp; - print_residuals: visualizes prediction errors  
-&nbsp; &nbsp;&nbsp; - plot_feature_importance: shows model feature weights  
-&nbsp; &nbsp;&nbsp; - plot_top3_drivers: highlights top predicted performers    
-
-# Example Output
-Predicted race pace order for Singapore
-Driver   | QualiTimes | CleanAirPaces | TeamScore | Ensemble_Pred
--------- |-------------|----------------|-----------|----------------
-NOR      | 89.123      | 90.456         | 1.000     | 90.321
-VER      | 89.789      | 91.012         | 0.446     | 90.876
-…
-
-# Future Improvements
-&nbsp; &nbsp;&nbsp; - Add weather and incident data  
-&nbsp; &nbsp;&nbsp; - Build an interactive dashboard (e.g. Streamlit)  
-&nbsp; &nbsp;&nbsp; - Track model performance across the season  
